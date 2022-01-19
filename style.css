@@ -1,0 +1,709 @@
+/* 1rem eh 16px, porem com rem os tamanhos ficam dinamicos
+dependendo do dispositivo usado */
+
+
+/*==== RESET ===================================*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* o tamanho agora levará em conta até a borda,  ou seja, 
+                             o width será a soma do conteúdo com a borda e o padding */
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+
+/*==== VARIABLES ===================================*/
+:root { /* pra todos os lugares poderema acessar */
+    --header-height: 4.5rem;
+
+    /* colors */
+    --hue: 159;
+    /* HSL color mode */
+    --base-color: hsl(var(--hue) 36% 57%);
+    --base-color-second: hsl(var(--hue) 65% 88%);
+    --base-color-alt: hsl(var(--hue) 57% 53%);
+    --title-color: hsl(var(--hue) 41% 10%);
+    --text-color: hsl(0 0% 46%);
+    --text-color-light: hsl(0 0% 98%);
+    --body-color: hsl(0 0% 98%);
+
+    /* fonts */
+    --title-font-size: 1.875rem;
+    --subtitle-font-size: 1rem;
+    --title-font: 'Poppins', sans-serif;
+    --body-font: 'DM Sans', sans-serif;
+}
+
+
+/*==== BASE ===================================*/
+html {
+    scroll-behavior: smooth; /* rola a tela de forma suave (pra quando usar o menu) */
+}
+
+body {
+    font: 400 1rem var(--body-font);
+    color: var(--text-color);
+    background: var(--body-color);
+    -webkit-font-smoothing: antialiased; /* deixar cinzinha */
+}
+
+.title {
+    font: 700 var(--title-font-size) var(--title-font);
+    color: var(--title-color);
+    -webkit-font-smoothing: auto;
+}
+
+.button {
+    background-color: var(--base-color);
+    color: var(--text-color-light);
+    height: 3.5rem;
+    display: inline-flex; /* prmitte alterar a altura e largura da caixa */
+    align-items: center;
+    padding: 0 2rem;
+    border-radius: 0.25rem;
+    font: 500 1rem var(--body-font);
+    transition: background 0.3s; /* tempo de transicao para qualquer mudanca (:hover) */
+}
+
+.button:hover { /* quando passar o mouse emcima */
+    background: var(--base-color-alt);
+}
+
+.divider-1 {
+    height: 1px;
+    background: linear-gradient(
+        270deg,
+        hsla(var(--hue), 36%, 57%, 1),
+        hsla(var(--hue), 65%, 88%, 0.34)
+    );
+}
+
+.divider-2 {
+    height: 1px;
+    background: linear-gradient(
+        270deg,
+        hsla(var(--hue), 65%, 88%, 0.34),
+        hsla(var(--hue), 36%, 57%, 1)
+    );
+}
+
+
+/*==== LEYOUT ===================================*/
+.container {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+.grid {
+    display: grid; /* habilita funcionalidades novas no css */
+    gap: 2rem; /* espaço entre as "caixas" filhas */
+}
+
+.section {
+    padding: calc(5rem + var(--header-height)) 0; /* esse 0 nao tem no dele */
+    /* calc() funcao matematica */
+}
+
+.section .title {
+    margin-bottom: 1rem;
+}
+
+.seciton .subtitle {
+    font-size: var(--subtitle-font-size);
+}
+
+.section header {
+    margin-bottom: 4rem;
+}
+
+.section header strong {
+    color: var(--base-color);
+}
+
+#header {
+    border-bottom: 1px solid #e4e4e4;
+    margin-bottom:  2rem;
+    display: flex; /* conteudo se adapta a tela */
+    width: 100%;
+    position: fixed; /* sempre aparece na tela, nao importa se rolar o mouse */
+    top: 0;
+    left: 0;
+    z-index: 100; /* mexer na sobreposicao */
+    background-color: var(--body-color);
+}
+
+#header.scroll {
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+/*==== LOGO ===================================*/
+.logo {
+    font: 700 1.31rem var(--title-font);
+    color: var(--title-color);
+}
+
+.logo span {
+    color: var(--base-color);
+}
+
+.logo-alt span {
+    color: var(--body-color);
+}
+
+
+/*==== NAVEGATION ===================================*/
+nav {
+    height: var(--header-height);
+    display: flex; /* para as coisas ficarem um ao lado do outro ao inves de embaixo */
+    align-items: center;
+    justify-content: space-between; /* separa o conteudo nos dois lados */
+    width: 100%;
+}
+
+nav ul li {
+    text-align: center;
+}
+
+nav ul li a {
+    transition: color 0.2s;
+    position: relative;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: var(--base-color);
+}
+
+nav ul li a::after {
+    content: ""; /* precisa ter alguma coisa no conteudo de um sudoelement */
+    width: 0%;
+    height: 2px;
+    background: var(--base-color);
+    position: absolute; /* absoluto em relacao ao proximo pai dele que tiver um position relative (nesse caso o "a") */
+    left: 0;
+    bottom: -1.5rem;
+    transition: width 0.2s;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after {
+    width: 100%;
+}
+
+nav .menu {
+    opacity: 0;
+    visibility: hidden;
+    top: -20rem;
+    transition: 0.2s;
+}
+
+nav .menu ul {
+    display: none;
+}
+
+/* Mostrar menu */
+/*
+"section.class" -> a "section" que tem a classe "class" 
+"section .class" -> qualquer coisa que tenha a classe "class" dentro da "section"
+*/
+nav.show .menu {
+    opacity: 1;
+    visibility: visible;
+    background: var(--body-color);
+    height: 100vh; /* viewport height: altura do dispositivo */
+    width: 100vw; /* viewport width: largura do dispositivo */
+    position: fixed;
+    /* comeca la na cantola superior esquerda */
+    top: 0;
+    left: 0;
+    
+    display: grid;
+    place-content: center;
+}
+
+nav.show ul.grid {
+    gap: 4rem;
+}
+
+nav.show .menu {
+    display: grid;
+    place-content: center; /* joga o conteudo no centro da tela */
+}
+
+nav.show .menu ul {
+    display: grid;
+}
+
+/* toggle menu */
+.toggle {
+    color: var(--base-color);
+    font-size: 1.5rem;
+    cursor: pointer; /* muda pra maozinha no cursor quando passa o tempo */
+}
+
+nav .icon-close {
+    visibility: hidden;
+    opacity: 0;
+
+    position: absolute;
+    top: -1.5rem; /* pra "vir de cima" quando abrir */
+    right: 1.5rem;
+    
+    transition: 0.2s;
+}
+
+nav.show div.icon-close {
+    visibility: visible;
+    opacity: 1;
+    top: 1.5rem;
+}
+
+
+/*==== HOME ===================================*/
+#home {
+    overflow: hidden; /* esconde o que extrapola */ 
+}
+
+#home .container {
+    margin: 0;
+}
+
+#home .image {
+    position: relative;
+}
+
+/*
+cria um pseudoelemento que é o primeiro filho do elemento selecionado
+geralmente é usado para adicionar conteúdo cosmético a um elemento com a propriedade content
+É inline por padrão.
+*/
+#home .image::before {
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: var(--base-color-second);
+    position: absolute; 
+    top: -16.8%; /* move pra cima */
+    left: 16.7%; /* move para a direita */
+    z-index: 0; /* sobreposicao de elementos (profundidade) */
+}
+
+#home .image img {
+    position: relative; /* habilita funcionalidades novas no css */
+    right: 2.93rem; /* espaçamento em relacao a lateral direita */
+}
+
+#home .image img,
+#home .image::before {
+    border-radius: 0.25rem;
+}
+
+#home .text {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    text-align: center;
+}
+
+#home .text p {
+    margin-bottom: 2rem;
+}
+
+#home .text h1 {
+    margin-bottom: 1rem;
+    max-width: 100%;
+}
+
+
+/*==== ABOUT ===================================*/
+#about {
+    background: white;
+}
+
+#about .container {
+    margin: 0;
+}
+
+#about .image {
+    position: relative;
+}
+
+#about .image::before {
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: var(--base-color-second);
+    position: absolute; 
+    top: -8.3%; /* move pra cima */
+    left: -33%; /* move para a direita */
+    z-index: 0; /* sobreposicao de elementos (profundidade) */
+}
+
+#about .image img {
+    position: relative; /* habilita funcionalidades novas no css */
+}
+
+#about .image img,
+#about .image::before {
+    border-radius: 0.25rem;
+}
+
+#about .text {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+
+/*==== SERVICES ===================================*/
+.cards.grid {
+    gap: 1.5rem;
+}
+
+.card {
+    padding: 3.625rem 2rem;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08);
+    border-bottom: 0.25rem solid var(--base-color);
+    border-radius: 0.25rem 0.25rem 0 0;
+    text-align: center;
+}
+
+.card i {
+    display: block; /* pra conseguir mexer nas margens */ 
+    margin-bottom: 1.5rem;
+    font-size: 5rem;
+    color: var(--base-color);
+}
+
+.card .title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75;
+}
+
+
+/*==== TESTIMONIALS ===================================*/
+#testimonials {
+    background: white;
+}
+
+#testimonials .container {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#testimonials header {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-bottom: 0;
+}
+
+#testimonials blockquote {
+    padding: 2rem;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 0.25rem;
+}
+
+#testimonials blockquote p {
+    position: relative;
+    text-indent: 1.875rem;
+    margin-bottom: 1.5rem;
+    color: var(--title-color);
+}
+
+#testimonials blockquote p span {
+    font: 700 2.5rem serif;
+    position: absolute;
+    top: -0.375rem;
+    left: -1.85rem;
+    color: var(--base-color);
+}
+
+#testimonials cite {
+    display: flex;
+    align-items: center;
+    font-style: normal;
+}
+
+#testimonials cite img {
+    width: 2rem;
+    height: 2rem;
+    object-fit: cover; /* cobre a imagem em todo o espaco que tem */
+    clip-path: circle(); /* deixar a imagem redenoda */
+    margin-right: 0.5rem;
+}
+
+/* swiper */
+.swiper-slide {
+    height: auto;
+    padding: 4rem 1rem;
+}
+
+.swiper-pagination-bullet {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+.swiper-pagination-bullet-active { /* a bolinha quando usada */
+    background: var(--base-color);
+}
+
+
+/*==== CONTACT ===================================*/
+#contact .grid {
+    gap: 4rem;
+}
+
+#contact .text p {
+    margin-bottom: 2rem;
+}
+
+#contact .button i,
+#contact ul li i {
+    font-size: 1.5rem;
+    margin-right:  0.625rem;
+}
+
+#contact ul.grid {
+    gap: 2rem;
+}
+
+#contact ul li {
+    display: flex;
+    align-items: center;
+}
+
+#contact ul li i {
+    color: var(--base-color);
+}
+
+
+/*==== FOOTER ===================================*/
+footer {
+    background: var(--base-color);
+}
+
+footer.section {
+    padding: 4rem 0;
+}
+
+footer .logo {
+    display: block; /* como a tag <a> eh "inline" por padrao
+    tem que trocar pra block pra poder alterar as margens */
+    margin-bottom: 1.5rem;
+}
+
+footer .brand p {
+    color: var(--text-color-light);
+    margin-bottom: 0.75rem;
+}
+
+footer i {
+    font-size: 1.5rem;
+    color: var(--text-color-light);
+}
+
+footer .social {
+    grid-auto-flow: column; /* deixa o gap do grid na horizontal ao inves da vertical */
+    width: fit-content; /* deixar a caixa do tamanho do conteudo */
+}
+
+footer .social a {
+    transition: 0.3s;
+    display: inline-block; /* como vai se mover (transform: translate()) nao pode ser inline,
+    mas tambem precisamos das propriedades inline */
+}
+
+footer .social a:hover {
+    transform: translateY(-8px);
+}
+
+/* Back to top */
+.back-to-top {
+    background: var(--base-color);
+    color: var(--text-color-light);
+
+    position: fixed; /* fica na mesma linha no z-index */
+    right: 1rem;
+    bottom: 1rem;
+
+    padding: 0.5rem;
+    clip-path: circle(); /* deixar redondo */
+
+    font-size: 1.5rem;
+    line-height: 0; /* tirar qualquer alinhamento que ele tenha na vertical */
+
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s;
+    transform: translateY(100%); /* move o botao no eixo y 100% do seu tamanho
+    (pra fazer animacao dele aparecendo) */
+}
+
+.back-to-top.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0%); /* volta o botao para sua posicao original */
+}
+
+
+/*==== MEDIA QUERIES ===================================*/
+/* tudo que tem @ recebe uma regra */
+/* @media(): quando atinigir o valor entre parenteses vai executar as acoes
+(ajuste na disposicao dos elementos na tela) */
+
+/* extra large devices: 1200 > */
+@media(min-width: 1200px) {
+
+    /* reusable classes */
+    .container {
+        max-width: 1120px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .section {
+        padding: 10rem 0;
+    }
+
+    .section header,
+    #testimonials header {
+        max-width: 32rem;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .button {
+        height: 3.25rem
+    }
+
+
+    /* navegation */
+    nav .menu {
+        opacity: 1;
+        visibility: visible;
+        top: 0;
+    }
+
+    nav .menu ul {
+        display: flex;
+        gap: 2rem;
+    }
+
+    nav .menu ul li a.title {
+        font: 400 1rem var(--body-font);
+        -webkit-font-smoothing: antialiased; /* deixar cinzinha */
+    }
+
+    nav .menu ul li a.title.active {
+        font-weight: bold;
+        -webkit-font-smoothing: auto;
+    }
+
+    nav .icon-menu {
+        display: none;
+    }
+
+
+    /* leyout */
+    main {
+        margin-top: var(--header-height);
+    }
+
+
+    /* home */
+    #home .container {
+        grid-auto-flow: column;
+        justify-content: space-between;
+        margin: 0 auto;
+    }
+
+
+    #home .image {
+        order: 1; /* da pra ordenar gracas ao grid */
+    }
+
+    #home .text {
+        order: 0;
+        max-width: 24rem;
+        text-align: left;
+    }
+
+
+    /* about */
+    #about .container {
+        margin: 0 auto;
+        grid-auto-flow: column;
+    }
+
+
+    /* services */
+    .cards {
+        grid-template-columns: 1fr 1fr 1fr; /* coloca o gap do grid na horizontal e divide os tamanhos das colunas por fracoes */
+    }
+
+    .card {
+        padding-left: 3rem;
+        padding-right: 3rem; 
+    }
+
+
+    /* testimonials */
+    #testimonials .container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    /* contact */
+    #contact .container {
+        grid-auto-flow: column;
+        align-items: center;
+    }
+
+    #contact .text {
+        max-width: 25rem;
+    }
+
+
+    /* footer */
+    footer.section {
+        padding: 3.75rem 0;
+    }
+
+    footer.container {
+        grid-auto-flow: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    footer .logo {
+        font-size: 2.25rem;
+    }
+}
+
+
+/* large devices: 1023 > */
+
+
+/* large devices: 992 > */
+@media(min-width: 992px) {
+    :root {
+        --title-font-size: 2.2rem;
+        --subtitle-font-size: 1.125rem;
+    }
+}
+
+/* meddium devices: 767 > */
+
